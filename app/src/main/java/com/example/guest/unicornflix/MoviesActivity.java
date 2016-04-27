@@ -1,7 +1,11 @@
 package com.example.guest.unicornflix;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,41 +14,62 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.Response;
 
 public class MoviesActivity extends AppCompatActivity {
+    public ArrayList<Movie> mMovies = new ArrayList<>();
+    public static final String TAG = MoviesActivity.class.getSimpleName();
+    @Bind(R.id.movieListView)
+    ListView mMovieListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies);
+        ButterKnife.bind(this);
+
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("title");
+
+        getMovies(title);
     }
 
-    public ArrayList<Movie> processResults (Response response) {
-        ArrayList<Movie> movies = new ArrayList<>();
+    private void getMovies(String title) {
+        final MovieService movieService = new MovieService();
 
-        try {
-            String jsonData = response.body().string();
-            if (response.isSuccessful()){
-                JSONObject movieDbJSON = new JSONObject(jsonData);
-                JSONArray moviesJSON = movieDbJSON.getJSONArray("results");
-                for (int i = 0; i <moviesJSON.length(); i++) {
-                    JSONObject movieJSON = moviesJSON.getJSONObject(i);
-                    String title = movieJSON.getString("title");
-                    String releaseDate = movieJSON.getString("release_date");
-                    Double voteAverage = movieJSON.getDouble("vote_average");
-                    String overview = movieJSON.getString("overview");
-
-                    Movie movie = new Movie(title, releaseDate, voteAverage, overview);
-                    movies.add(movie);
-                }
+        movieService.findMovies(title, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
-        return movies;
-    }
 
+            @Override
+            public void onResponse(Call call, Response response) {
+                mMovies = movieService.processResults(response);
+
+                MoviesActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        String[] movieNames = new String[mMovies.size()];
+                        for (int i=0; i<movieNames.length; i++) {
+                            movieNames[i] = mMovies.get(i).getTitle();
+                        }
+
+                        ArrayAdapter adapter = new ArrayAdapter(MoviesActivity.this,
+                                android.R.layout.simple_list_item_1, movieNames);
+                        mMovieListView.setAdapter(adapter);
+
+                        for (Movie movie : mMovies) {
+                            Log.d(TAG, "Title: " + movie.getTitle());
+                        }
+                    }
+                });
+            }
+        });
+    }
 }
