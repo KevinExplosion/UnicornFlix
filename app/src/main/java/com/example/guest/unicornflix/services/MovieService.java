@@ -1,6 +1,9 @@
-package com.example.guest.unicornflix;
+package com.example.guest.unicornflix.services;
 
 import android.util.Log;
+
+import com.example.guest.unicornflix.Constants;
+import com.example.guest.unicornflix.models.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,9 +20,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-/**
- * Created by Guest on 4/27/16.
- */
 public class MovieService {
 
     public static void findMovies(String title, Callback callback) {

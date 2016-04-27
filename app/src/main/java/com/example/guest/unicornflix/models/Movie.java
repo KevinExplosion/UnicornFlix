@@ -1,4 +1,4 @@
-package com.example.guest.unicornflix;
+package com.example.guest.unicornflix.models;
 
 
 public class Movie {

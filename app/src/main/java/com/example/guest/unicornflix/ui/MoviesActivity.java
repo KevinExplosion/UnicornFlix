@@ -1,4 +1,4 @@
-package com.example.guest.unicornflix;
+package com.example.guest.unicornflix.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +7,9 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.guest.unicornflix.services.MovieService;
+import com.example.guest.unicornflix.R;
+import com.example.guest.unicornflix.models.Movie;
 
 import java.io.IOException;
 import java.util.ArrayList;
