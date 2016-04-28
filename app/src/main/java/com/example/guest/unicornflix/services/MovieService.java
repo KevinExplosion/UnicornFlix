@@ -59,8 +59,12 @@ public class MovieService {
                     String releaseDate = movieJSON.getString("release_date");
                     Double voteAverage = movieJSON.getDouble("vote_average");
                     String overview = movieJSON.getString("overview");
+                    String movieImage = movieJSON.getString("poster_path");
 
-                    Movie movie = new Movie(title, releaseDate, voteAverage, overview);
+                    Movie movie = new Movie(title, movieImage, releaseDate, voteAverage, overview);
+                    Intent intent = new Intent(this, Movies.class);
+                    intent.putExtra("user", Parcels.wrap(user));
+                    startActivity(intent);
                     movies.add(movie);
                 }
             }

@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Unicorn-Flix_android.iml" filepath="$PROJECT_DIR$/Unicorn-Flix_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Unicorn-Flix_android_right.iml" filepath="$PROJECT_DIR$/Unicorn-Flix_android_right.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
